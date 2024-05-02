@@ -78,7 +78,8 @@ const ViewAllBtn = styled(Link)`
   white-space: nowrap;
   color: var(--color-white);
   transition: all 0.3s;
-  padding: ${(props) => (props.$isViewAllHover ? "0.7rem 3rem 0.7rem 1.2rem" : "0.7rem 1.2rem")};
+  padding: ${(props) =>
+    props.$isViewAllHover ? "0.7rem 3rem 0.7rem 1.2rem" : "0.7rem 1.2rem"};
   background-color: var(--color-dark);
 `;
 
@@ -155,7 +156,10 @@ const InfoDetail = styled.div`
 
 export default function Main() {
   const [isDragging, setIsDragging] = useState(false);
-  const { products } = useFetch("https://dummyjson.com/products?skip=0&limit=16", "GET");
+  const { products } = useFetch(
+    "https://dummyjson.com/products?skip=0&limit=16",
+    "GET"
+  );
   const [isViewAllHover, setIsViewAllHover] = useState(false);
   const navigate = useNavigate();
 
@@ -183,7 +187,11 @@ export default function Main() {
     <Layout>
       <Slider {...settings}>
         {imgUrl.map((url) => (
-          <Slide key={uuid4()} onClick={handleMainImgClick} $isDragging={isDragging}>
+          <Slide
+            key={uuid4()}
+            onClick={handleMainImgClick}
+            $isDragging={isDragging}
+          >
             <SlideImg src={url} alt="mainImg" />
             <SlideInfo>SPRING & SUMMER</SlideInfo>
           </Slide>
@@ -206,11 +214,17 @@ export default function Main() {
         </ViewAllBtn>
         <Etc>
           <EtcWrapper>
-            <EtcImg src="https://danton.com/cdn/shop/files/ABOUT_720x.jpg?v=1627484235" alt="" />
+            <EtcImg
+              src="https://danton.com/cdn/shop/files/ABOUT_720x.jpg?v=1627484235"
+              alt=""
+            />
             <EtcInfo>ABOUT</EtcInfo>
           </EtcWrapper>
           <EtcWrapper>
-            <EtcImg src="https://danton.com/cdn/shop/files/SHOP_720x.jpg?v=1627484235" alt="" />
+            <EtcImg
+              src="https://danton.com/cdn/shop/files/SHOP_720x.jpg?v=1627484235"
+              alt=""
+            />
             <EtcInfo>SHOP</EtcInfo>
           </EtcWrapper>
         </Etc>

@@ -4,6 +4,7 @@ import ProductImage from "./ProductImage";
 import ProductInfo from "./ProductInfo";
 import ProductColor from "./ProductColor";
 import { v4 as uuid4 } from "uuid";
+import useRouting from "../hooks/useRouting";
 
 const Product = styled.div`
   display: flex;
@@ -21,8 +22,14 @@ const Colors = styled.div`
 `;
 
 export default function ProductCard({ product }) {
+  const { goToProductDetail } = useRouting(); // useRouting 훅 사용
+
+  const handleProductClick = () => {
+    goToProductDetail(`detail/${product.id}`); // 클릭 시 goToProductDetail 함수 호출
+  };
+
   return (
-    <Product>
+    <Product onClick={handleProductClick}>
       <ProductImage imgs={product.images} />
       <ProductInfo product={product} />
       <Colors>

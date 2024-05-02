@@ -32,7 +32,10 @@ export default function ProductImage({ imgs }) {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <Layout onMouseEnter={() => setIsVisible(true)} onMouseLeave={() => setIsVisible(false)}>
+    <Layout
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+    >
       <MainImg src={imgs[0]} alt="product-image" $isVisible={isVisible} />
       <SubImg src={imgs[1]} alt="product-image" $isVisible={isVisible} />
     </Layout>

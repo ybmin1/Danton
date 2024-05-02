@@ -9,6 +9,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { v4 as uuid4 } from "uuid";
 import ProductCard from "../common/ProductCard";
 import Pagination from "../common/Pagination";
+import useRouting from "../hooks/useRouting";
 
 const Layout = styled.div`
   display: flex;
@@ -127,7 +128,9 @@ const FilterBtn = styled.button`
   padding: 0.6rem 0.5rem;
   background-color: transparent;
   border: ${(props) =>
-    props.$isFilterOpen ? "2px solid var(--color-dark)" : "1px solid var(--color-lightgray)"};
+    props.$isFilterOpen
+      ? "2px solid var(--color-dark)"
+      : "1px solid var(--color-lightgray)"};
   border-radius: 3px;
   letter-spacing: 1px;
   cursor: pointer;
@@ -197,6 +200,7 @@ export default function AllProducts() {
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
+  const { goToProductDetail } = useRouting();
 
   console.log(products);
   const lastItemRef = useRef(null);
@@ -239,9 +243,9 @@ export default function AllProducts() {
   // 무한 스크롤
   useEffect(() => {
     const fetchMoreItems = async () => {
-      const data = await fetch(`https://dummyjson.com/products?limit=16&skip=${page * 16}`).then(
-        (res) => res.json()
-      );
+      const data = await fetch(
+        `https://dummyjson.com/products?limit=16&skip=${page * 16}`
+      ).then((res) => res.json());
 
       if (data.products.length === 0) {
         setHasMore(false);
@@ -262,6 +266,10 @@ export default function AllProducts() {
     };
   }, [page, hasMore, isPagination]);
 
+  const handleProductClick = (id) => {
+    goToProductDetail(id); // Call the goToProduct function with the product id
+  };
+
   return (
     <Layout>
       <Category>
@@ -278,10 +286,16 @@ export default function AllProducts() {
         </CategoryButton>
         <Filter>
           <ScrollType>
-            <TypeScroll $isPagination={isPagination} onClick={() => setIsPagination(false)}>
+            <TypeScroll
+              $isPagination={isPagination}
+              onClick={() => setIsPagination(false)}
+            >
               Scroll
             </TypeScroll>
-            <TypePagination $isPagination={isPagination} onClick={() => setIsPagination(true)}>
+            <TypePagination
+              $isPagination={isPagination}
+              onClick={() => setIsPagination(true)}
+            >
               Pagination
             </TypePagination>
           </ScrollType>
@@ -308,7 +322,11 @@ export default function AllProducts() {
 
       <Products>
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard
+            kkey={product.id}
+            product={product}
+            onClick={() => handleProductClick(product.id)}
+          />
         ))}
       </Products>
 

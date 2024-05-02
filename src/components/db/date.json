@@ -1,0 +1,32 @@
+{
+  "productId": "12345",
+  "productName": "Men's P/R Twill Easy Pants",
+  "price": "224.62",
+  "currency": "USD",
+  "colors": [
+    { "name": "Navy", "hexCode": "#000080" },
+    { "name": "Black", "hexCode": "#000000" }
+  ],
+  "sizes": ["S", "M", "L"],
+  "availability": {
+    "inStock": true,
+    "quantity": 10,
+    "freeShippingThreshold": "30"
+  },
+  "details": [
+    "A slightly tapered pull-on pant",
+    "Made with ultra-flexible DobbyStretch and nylon",
+    "Moisture-wicking and dry"
+  ],
+  "careInstructions": "Machine wash",
+  "modelInfo": {
+    "height": "185cm B91 W78 H93",
+    "wearingSize": "42"
+  },
+  "sizeFit": [
+    { "size": "S", "waist": "70", "rise": "26.5", "inseam": "71" },
+    { "size": "M", "waist": "75", "rise": "27", "inseam": "73" },
+    { "size": "L", "waist": "80", "rise": "27.5", "inseam": "75" }
+  ],
+  "inventoryNotice": "Every product of our online store is also on sale at DANTON's physical store, so it may have already been sold out when you placed your order.\nWe hope for your kind understanding."
+}

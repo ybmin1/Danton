@@ -27,7 +27,7 @@ const Price = styled.p`
 export default function ProductInfo({ product }) {
   return (
     <Layout>
-      <Description>{product.description}</Description>
+      <Description>{product.title}</Description>
       <Price>${product.price}</Price>
     </Layout>
   );
