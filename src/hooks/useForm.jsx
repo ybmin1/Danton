@@ -1,7 +1,12 @@
 import { SHA256 } from "crypto-js";
 import { useState } from "react";
 
-export default function useForm(formValid, handleEveryValid, handleGenderValid) {
+export default function useForm(
+  formValid,
+  handleEveryValid,
+  handleCountryValid,
+  handleGenderValid
+) {
   const [form, setForm] = useState({
     profileImage: "/assets/image/avatar.png",
     name: "",
@@ -9,12 +14,14 @@ export default function useForm(formValid, handleEveryValid, handleGenderValid) 
     password: "",
     passwordCheck: "",
     phoneNumber: "",
+    country: "",
     address: "",
-    detailAddress: "",
+    city: "",
+    postcode: "",
     gender: "",
   });
 
-  // 이름, 이메일, 비밀번호, 비밀번호 확인, 전화번호
+  // 이름, 이메일, 비밀번호, 비밀번호 확인, 전화번호, 주소1, 주소2, 시티
   const handleInput = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -25,27 +32,39 @@ export default function useForm(formValid, handleEveryValid, handleGenderValid) 
     const file = e.target.files[0];
 
     if (!file) {
-      setForm((prev) => ({ ...prev, profileImage: "/assets/image/avatar.png" }));
+      setForm((prev) => ({
+        ...prev,
+        profileImage: "/assets/image/avatar.png",
+      }));
     } else {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        if (reader.readyState === 2) setForm((prev) => ({ ...prev, profileImage: reader.result }));
+        if (reader.readyState === 2)
+          setForm((prev) => ({ ...prev, profileImage: reader.result }));
       };
     }
   };
 
-  // 성별
-  const handleGender = (e) => {
-    const { name, id } = e.target;
-    setForm((prev) => ({ ...prev, [name]: id }));
-    handleGenderValid(id);
+  // 국가
+  const handleCountry = (name, value) => {
+    setForm((prev) => ({
+      ...prev,
+      [name]: value, // 국가 정보 업데이트
+    }));
   };
 
-  // 주소 모달
-  const handleAddr = (address) => {
-    setForm((prev) => ({ ...prev, address }));
+  // 성별
+  const handleGender = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    handleGenderValid(value);
   };
+
+  // // 주소 모달
+  // const handleAddr1 = (address) => {
+  //   setForm((prev) => ({ ...prev, address }));
+  // };
 
   // Form 제출
   const handleSubmit = (e) => {
@@ -59,19 +78,34 @@ export default function useForm(formValid, handleEveryValid, handleGenderValid) 
       // 회원가입 진행
       const formData = new FormData();
       const shaPassword = SHA256(form.password).toString();
-      const fullAddress = form.address + form.detailAddress;
+      //const fullAddress = form.address + form.detailAddress;
 
-      Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+      Object.entries(form).forEach(([key, value]) =>
+        formData.append(key, value)
+      );
       formData.set("password", shaPassword);
-      formData.append("fullAddress", fullAddress);
+      //formData.append("fullAddress", fullAddress);
 
-      // 회원가입 API 통신 필요
-      // const response = fetch("", {
-      //   method: "POST",
-      //   body: formData,
-      // });
+      console.log("유효성검사 모두 통과 및 제출");
+
+      //API 통신
+      fetch("", {
+        method: "POST",
+        body: formData,
+      }).catch((error) => {
+        console.error("API 통신 에러 발생:", error);
+      });
+    } else {
+      console.log("제출 실패", allInputValid, formValid);
     }
   };
 
-  return { form, handleInput, handleSubmit, handleProfileImage, handleGender, handleAddr };
+  return {
+    form,
+    handleInput,
+    handleSubmit,
+    handleProfileImage,
+    handleCountry,
+    handleGender,
+  };
 }

@@ -11,19 +11,28 @@ export default function useFormValidate() {
     isPasswordCheckValid: false,
     isPhoneNumberTouched: false,
     isPhoneNumberValid: false,
-    isAddressTouched: false,
-    isAddressValid: false,
+    isCountryTouched: false,
+    isCountryValid: false,
+    isAddress1Touched: false,
+    isAddress1Valid: false,
+    isCityTouched: false,
+    isCityValid: false,
+    isPostcodeTouched: false,
+    isPostcodeValid: false,
     isGenderTouched: false,
     isGenderValid: false,
   });
   const [formValidMessage, setFormValidMessage] = useState({
-    nameErrorMessage: "이름을 입력해주세요.",
-    emailErrorMessage: "이메일을 입력해주세요.",
-    passwordErrorMessage: "비밀번호를 입력해주세요.",
-    passwordCheckErrorMessage: "비밀번호를 확인해주세요.",
-    phoneNumberErrorMessage: "전화번호를 입력해주세요.",
-    addressErrorMessage: "주소를 입력해주세요.",
-    genderErrorMessage: "성별을 선택해주세요.",
+    nameErrorMessage: "",
+    emailErrorMessage: "",
+    passwordErrorMessage: "",
+    passwordCheckErrorMessage: "",
+    phoneNumberErrorMessage: "",
+    countryErrorMessage: "",
+    addressErrorMessage: "",
+    cityErrorMessage: "",
+    postcodeErrorMessage: "",
+    genderErrorMessage: "",
   });
 
   // 이름 유효성 검사
@@ -31,7 +40,7 @@ export default function useFormValidate() {
     let nameErrorMessage = "";
 
     if (value.length === 0) {
-      nameErrorMessage = "이름을 입력해주세요.";
+      nameErrorMessage = "Please enter your name";
     }
 
     setFormValid((prev) => ({
@@ -52,9 +61,9 @@ export default function useFormValidate() {
     let emailErrorMessage = "";
 
     if (!isValidLength) {
-      emailErrorMessage = "이메일을 입력해주세요.";
+      emailErrorMessage = "Please enter your email address";
     } else if (!isValidReg) {
-      emailErrorMessage = "이메일 형식을 확인해주세요.";
+      emailErrorMessage = "Please enter a valid email address";
     }
 
     setFormValid((prev) => ({
@@ -76,9 +85,10 @@ export default function useFormValidate() {
     let passwordErrorMessage = "";
 
     if (!isValidLength) {
-      passwordErrorMessage = "비밀번호를 입력해주세요.";
+      passwordErrorMessage = "Please enter your password";
     } else if (!isValidReg) {
-      passwordErrorMessage = "비밀번호 형식을 확인해주세요.";
+      passwordErrorMessage =
+        "Use a password that has 8 to 15 characters. Use at least one number, one letter and one special character ";
     }
 
     setFormValid((prev) => ({
@@ -99,9 +109,9 @@ export default function useFormValidate() {
     let passwordCheckErrorMessage = "";
 
     if (!isValidLength) {
-      passwordCheckErrorMessage = "비밀번호 확인을 진행해주세요.";
+      passwordCheckErrorMessage = "Please confirm your password";
     } else if (!isValidSame) {
-      passwordCheckErrorMessage = "비밀번호가 일치하지 않습니다.";
+      passwordCheckErrorMessage = "Passwords do not match";
     }
 
     setFormValid((prev) => ({
@@ -117,15 +127,16 @@ export default function useFormValidate() {
 
   // 전화번호 유효성 검사
   const handlePhoneNumberValid = (value) => {
-    const regex = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+    const regex = /^\d{7,15}$/;
     const isValidReg = regex.test(value);
     const isValidLength = value.length !== 0;
     let phoneNumberErrorMessage = "";
 
     if (!isValidLength) {
-      phoneNumberErrorMessage = "전화번호를 입력해주세요.";
+      phoneNumberErrorMessage = "Please enter your phone number";
     } else if (!isValidReg) {
-      phoneNumberErrorMessage = "전화번호 형식을 확인해주세요.";
+      phoneNumberErrorMessage =
+        "Please enter a valid phone number (7-15 digits)";
     }
 
     setFormValid((prev) => ({
@@ -139,15 +150,19 @@ export default function useFormValidate() {
     }));
   };
 
-  // 주소 유효성 검사
-  const handleAddrValid = (address) => {
-    const isAddressValid = address !== "";
-    let addressErrorMessage = "주소를 입력해주세요.";
+  // 주소1 유효성 검사
+  const handleAddr1Valid = (address) => {
+    const isAddress1Valid = address !== "";
+    let addressErrorMessage = "";
+
+    if (!isAddress1Valid) {
+      addressErrorMessage = "Please enter your address";
+    }
 
     setFormValid((prev) => ({
       ...prev,
-      isAddressTouched: true,
-      isAddressValid,
+      isAddress1Touched: true,
+      isAddress1Valid,
     }));
     setFormValidMessage((prev) => ({
       ...prev,
@@ -155,10 +170,74 @@ export default function useFormValidate() {
     }));
   };
 
+  // 시티 유효성 검사
+  const handleCityValid = (city) => {
+    const isCityValid = city !== "";
+    let cityErrorMessage = "";
+
+    if (!isCityValid) {
+      cityErrorMessage = "Please enter your city";
+    }
+
+    setFormValid((prev) => ({
+      ...prev,
+      isCityTouched: true,
+      isCityValid,
+    }));
+    setFormValidMessage((prev) => ({
+      ...prev,
+      cityErrorMessage,
+    }));
+  };
+
+  // 우편번호 유효성 검사
+  const handlePostcodeValid = (postcode) => {
+    const isPostcodeValid = postcode !== "";
+    let postcodeErrorMessage = "";
+
+    if (!isPostcodeValid) {
+      postcodeErrorMessage = "Please enter your postcode";
+    }
+
+    setFormValid((prev) => ({
+      ...prev,
+      isPostcodeTouched: true,
+      isPostcodeValid,
+    }));
+    setFormValidMessage((prev) => ({
+      ...prev,
+      postcodeErrorMessage,
+    }));
+  };
+
+  // 나라 유효성 검사
+  const handleCountryValid = (value) => {
+    const isCountryValid = value !== "";
+    let countryErrorMessage = "";
+
+    if (!isCountryValid) {
+      countryErrorMessage = "Please select your country";
+    }
+
+    setFormValid((prev) => ({
+      ...prev,
+      isCountryTouched: true,
+      isCountryValid,
+    }));
+    setFormValidMessage((prev) => ({
+      ...prev,
+      countryErrorMessage,
+    }));
+  };
+
   // 성별 유효성 검사
   const handleGenderValid = (value) => {
-    const isGenderValid = value === "" ? false : true;
-    const genderErrorMessage = "성별을 선택해주세요.";
+    const isGenderValid = value !== "";
+    let genderErrorMessage = "";
+
+    if (!isGenderValid) {
+      genderErrorMessage = "Please select your gender";
+    }
 
     setFormValid((prev) => ({
       ...prev,
@@ -180,7 +259,10 @@ export default function useFormValidate() {
       isPasswordTouched: true,
       isPasswordCheckTouched: true,
       isPhoneNumberTouched: true,
-      isAddressTouched: true,
+      isCountryTouched: true,
+      isAddress1Touched: true,
+      isCityTouched: true,
+      isPostcodeTouched: true,
       isGenderTouched: true,
     }));
   };
@@ -193,7 +275,10 @@ export default function useFormValidate() {
     handlePasswordValid,
     handlePasswordCheckValid,
     handlePhoneNumberValid,
-    handleAddrValid,
+    handleCountryValid,
+    handleAddr1Valid,
+    handleCityValid,
+    handlePostcodeValid,
     handleGenderValid,
     handleEveryValid,
   };
